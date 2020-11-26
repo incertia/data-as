@@ -4,16 +4,16 @@
 {-# LANGUAGE RankNTypes #-}
 
 {-|
-Module: Data.As
-Description: Simple extensible sum
-Copyright: (c) incertia, 2020
-License: MIT
-Maintainer: incertia@incertia.net
-Stability: experimental
-Portability: portable
+Module      : Data.As
+Description : Simple extensible sum
+Copyright   : (c) incertia, 2020
+License     : MIT
+Maintainer  : incertia@incertia.net
+Stability   : experimental
+Portability : portable
 
 This module provides the 'As' class which is a multi parameter classy prism,
-much like how 'Has' is a multi parameter classy lens.
+much like how 'Data.Has.Has' is a multi parameter classy lens.
 
 We have the following primary use case for 'As'.
 
