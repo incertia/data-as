@@ -58,6 +58,12 @@ instance Choice Tagged where
 type Prism t a = forall p f. (Choice p, Applicative f) => p a (f a) -> p t (f t)
 
 -- these definitions are ripped directly from lens
+-- | A typeclass for extensible sums.
+--
+-- The provided instances were inspired from the lens library.
+--
+-- Making your own instances when you actually depend on lens should be as easy
+-- as @instance As Foo Bar where asPrism = _Foo@.
 class As a t where
   {-# MINIMAL previewer, reviewer | asPrism #-}
   previewer :: t -> Maybe a
@@ -75,33 +81,46 @@ class As a t where
 -- some instances based on the lens library
 instance As a a where
   asPrism = id
+  {-# INLINABLE asPrism #-}
 
 instance As a (Maybe a) where
   previewer = id
+  {-# INLINABLE previewer #-}
   reviewer = Just
+  {-# INLINABLE reviewer #-}
 
 instance As () (Maybe a) where
   previewer ma = case ma of
                    Nothing -> Just ()
                    Just _  -> Nothing
+  {-# INLINABLE previewer #-}
   reviewer () = Nothing
+  {-# INLINABLE reviewer #-}
 
 instance As a (Either a b) where
   previewer eab = case eab of
                     Left a  -> Just a
                     Right _ -> Nothing
+  {-# INLINABLE previewer #-}
   reviewer = Left
+  {-# INLINABLE reviewer #-}
 
 instance As b (Either a b) where
   previewer eab = case eab of
                     Right b -> Just b
                     Left _  -> Nothing
+  {-# INLINABLE previewer #-}
   reviewer = Right
+  {-# INLINABLE reviewer #-}
 
 instance (Read a, Show a) => As a String where
   previewer = readMaybe
+  {-# INLINABLE previewer #-}
   reviewer = show
+  {-# INLINABLE reviewer #-}
 
 instance As Void a where
   previewer _ = Nothing
+  {-# INLINABLE previewer #-}
   reviewer = absurd
+  {-# INLINABLE reviewer #-}
